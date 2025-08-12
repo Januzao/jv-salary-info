@@ -5,33 +5,37 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 public class SalaryInfo {
-    private static final DateTimeFormatter dateTimeFormatter =
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private static final int DATE_INDEX = 0;
+    private static final int NAME_INDEX = 1;
+    private static final int HOURS_INDEX = 2;
+    private static final int RATE_INDEX = 3;
 
     public String getSalaryInfo(String[] names, String[] data,
                                 String dateFrom, String dateTo) {
-        LocalDate from = LocalDate.parse(dateFrom, dateTimeFormatter);
-        LocalDate to = LocalDate.parse(dateTo, dateTimeFormatter);
+        LocalDate from = LocalDate.parse(dateFrom, DATE_TIME_FORMATTER);
+        LocalDate to = LocalDate.parse(dateTo, DATE_TIME_FORMATTER);
 
         int[] salaries = new int[names.length];
 
         for (String record : data) {
             String[] parts = record.split(" ");
 
-            LocalDate date = LocalDate.parse(parts[0], dateTimeFormatter);
+            LocalDate date = LocalDate.parse(parts[DATE_INDEX], DATE_TIME_FORMATTER);
 
             if (date.isAfter(to) || date.isBefore(from)) {
                 continue;
             }
 
-            String name = parts[1];
+            String name = parts[NAME_INDEX];
 
             if (!Arrays.asList(names).contains(name)) {
                 continue;
             }
 
-            int hours = Integer.parseInt(parts[2]);
-            int rate = Integer.parseInt(parts[3]);
+            int hours = Integer.parseInt(parts[HOURS_INDEX]);
+            int rate = Integer.parseInt(parts[RATE_INDEX]);
             int salary = hours * rate;
 
             int index = Arrays.asList(names).indexOf(name);
